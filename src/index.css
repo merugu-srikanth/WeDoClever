@@ -1,0 +1,169 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@300;400;500;600;700;800;900&family=Syne:wght@400..800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", "Inter", sans-serif;
+  --font-syne: "Syne", sans-serif;
+  --font-dm: "DM Sans", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  
+  --color-accent-blue: #00c2ff;
+  --color-accent-purple: #7b2fff;
+}
+
+@layer base {
+  body {
+    @apply bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee-slow {
+    animation: marquee 45s linear infinite;
+  }
+
+  .animate-marquee-reverse {
+    animation: marquee-reverse 35s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+
+  /* Pause marquee on container hover */
+  .marquee-pause:hover .animate-marquee,
+  .marquee-pause:hover .animate-marquee-slow,
+  .marquee-pause:hover .animate-marquee-reverse {
+    animation-play-state: paused;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(0, 194, 255, 0.6);
+  }
+
+  .box-glow {
+    box-shadow: 0 0 40px rgba(0, 194, 255, 0.2);
+  }
+  
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-lg;
+  }
+
+  /* UIVERSE: Shiny Button */
+  .btn-shiny {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .btn-shiny::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: all 0.5s ease;
+  }
+  .btn-shiny:hover::before {
+    left: 100%;
+  }
+
+  /* UIVERSE: Gradient Outline Button */
+  .btn-outline-glow {
+    position: relative;
+    background: #ffffff;
+    z-index: 1;
+  }
+  .btn-outline-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #2253ff, #00c2ff, #7b2fff, #2253ff);
+    background-size: 300% 100%;
+    z-index: -1;
+    animation: gradient-shift 3s ease infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .btn-outline-glow:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Fancy Card Hover */
+  .card-lift {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(34, 83, 255, 0.1);
+  }
+
+  /* Animated Border Card */
+  .animated-border-box {
+    position: relative;
+    background: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+  }
+  .animated-border-box::after {
+    content: '';
+    position: absolute;
+    top: -1px; bottom: -1px;
+    left: -1px; right: -1px;
+    background: linear-gradient(60deg, #2253ff, #00c2ff, #7b2fff);
+    z-index: -1;
+    border-radius: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .animated-border-box:hover::after {
+    opacity: 1;
+  }
+
+  /* Dark card hover — for dark-theme service cards */
+  .dark-card-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .dark-card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+
+  /* Glow pulse on blue dots */
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(59,130,246,0.4); }
+    50% { box-shadow: 0 0 20px rgba(59,130,246,0.8); }
+  }
+  .glow-dot {
+    animation: glow-pulse 2s ease infinite;
+  }
+}
+
+button, a {
+  cursor: pointer !important;
+}
