@@ -106,12 +106,12 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         {/* Header */}
-        <div className="heading text-center max-w-3xl mx-auto mb-20">
+        <div className="heading text-center max-w-3xl  mx-auto mb-20">
           <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 shadow-sm mb-6">
             <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
             <span className="text-xs font-dm font-bold text-blue-400 uppercase tracking-[0.15em]">Get In Touch</span>
           </div>
-          <h1 className="font-syne font-black text-5xl md:text-6xl text-slate-100 tracking-tight">
+          <h1 className="font-syne font-black text-3xl md:text-6xl text-slate-100 tracking-tight">
             Ready to Build{" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               Something Clever?
@@ -126,7 +126,7 @@ export default function Contact() {
 
           {/* Left: contact info */}
           <div className="contact-info space-y-10">
-            <div>
+            <div className="md:visible hidden">
               <h3 className="font-syne font-bold text-3xl text-slate-100 mb-4">Let's start a conversation</h3>
               <p className="text-slate-400 font-dm leading-relaxed text-lg">
                 Partner with us to navigate your next digital initiative — web, mobile, or marketing. We reply within 24 hours on business days.

@@ -650,8 +650,8 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
           ref={chatRef}
           style={isMobile ? {
             // ── MOBILE: full-width bottom sheet ──
-            position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 999,
-            width: "100%", height: "88vh", maxHeight: "88vh",
+            position: "fixed", bottom: 50, left: 0, right: 0, zIndex: 999,
+            width: "100%", height: "48vh", maxHeight: "88vh",
             background: "linear-gradient(180deg,#020c1b 0%,#030e1f 100%)",
             borderRadius: "1.4rem 1.4rem 0 0",
             border: "1px solid rgba(37,99,235,0.3)",
