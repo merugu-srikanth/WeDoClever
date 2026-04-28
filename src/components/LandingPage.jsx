@@ -83,46 +83,39 @@ const HeroSection = () => {
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-gray-900/90" />
 
-      <div className="relative container mx-auto px-6 pt-32 pb-20 z-10 w-full">
-        <div className="inline-flex items-center gap-3 rounded-full px-5 py-2 mb-8
+      <div className="relative container mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-16 sm:pb-20 z-10 w-full">
+        <div className="inline-flex items-center gap-2 sm:gap-3 rounded-full px-3 sm:px-5 py-1.5 sm:py-2 mb-6 sm:mb-8
   bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700
   bg-[length:200%_100%] bg-left hover:bg-right
   transition-all duration-700 ease-in-out shadow-lg">
-
-  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-
-  <span className="text-white text-xs font-syne font-bold tracking-[0.2em] uppercase">
+  <span className="w-2 h-2 rounded-full bg-white animate-pulse shrink-0" />
+  <span className="text-white text-[10px] sm:text-xs font-syne font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase">
     No Corporate BS. Just Results.
   </span>
 </div>
 
-        <h1 className="font-syne font-black uppercase text-white leading-[1.05] tracking-tighter max-w-5xl">
-          <span className="block text-[clamp(48px,4vw,120px)] rv">WE BUILD</span>
-          <span className="block text-[clamp(44px,4.5vw,110px)] bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent rv">
+        <h1 className="font-syne font-black uppercase text-white leading-[1.08] tracking-tighter max-w-5xl">
+          <span className="block text-[clamp(32px,7vw,120px)] rv">WE BUILD</span>
+          <span className="block text-[clamp(28px,6.5vw,110px)] bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent rv">
             SCALABLE IDEAS
           </span>
-          <span className="block text-[clamp(48px,5vw,120px)] text-glow rv">INTO REALITY</span>
+          <span className="block text-[clamp(32px,7vw,120px)] text-glow rv">INTO REALITY</span>
         </h1>
 
-        <p className="mt-2 text-white/90 max-w-2xl text-lg md:text-xl font-dm leading-relaxed rv font-medium">
+        <p className="mt-3 sm:mt-4 text-white/85 max-w-2xl text-sm sm:text-base md:text-xl font-dm leading-relaxed rv font-medium">
           Whether you're struggling with legacy code or dreaming up the next big SaaS, we engineer digital products that dominate markets. We don't just write code; we solve business problems.
         </p>
 
-        <div className="mt-4 flex flex-wrap items-center gap-6 rv">
-          <button className="px-10 py-3 rounded-full bg-white text-gray-950 font-syne font-black text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-3">
+        <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-3 sm:gap-6 rv">
+          <button className="px-6 sm:px-10 py-2.5 sm:py-3 rounded-full bg-white text-gray-950 font-syne font-black text-xs sm:text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 sm:gap-3">
             Let's Talk
-            {/* <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-blue-100 transition-colors"> */}
-              {/* <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                <path d="M1 8h12M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg> */}
-               <span className="w-12 h-12 rounded-full border bg-blue-500 border-white/30 flex items-center justify-center transition-all hover:bg-white/10 glass-panel">
-              <FastForwardIcon className="text-whit" />
+            <span className="w-8 h-8 sm:w-12 sm:h-12 rounded-full border bg-blue-500 border-white/30 flex items-center justify-center transition-all hover:bg-white/10 glass-panel">
+              <FastForwardIcon className="text-white" />
             </span>
-            {/* </div> */}
           </button>
 
-          <button className="px-5 py-3 rounded-full bg-blue-600 text-gray-100 font-syne font-black text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-3">
-            <span className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center transition-all hover:bg-white/10 glass-panel">
+          <button className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-blue-600 text-gray-100 font-syne font-black text-xs sm:text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 sm:gap-3">
+            <span className="w-8 h-8 sm:w-12 sm:h-12 rounded-full border border-white/30 flex items-center justify-center transition-all hover:bg-white/10 glass-panel">
               <FastForwardIcon className="text-white" />
             </span>
             See How We Work

@@ -86,7 +86,7 @@ const KNOWLEDGE_BASE = [
       { icon: "📞", label: "Phone", text: "+91 9110572323", link: "tel:+919876543210" },
       { icon: "📍", label: "Location", text: "Hyderabad, Telangana, India" },
     ],
-    chips: ["Open WhatsApp", "Free consultation", "Pricing?"],
+    chips: ["Open WhatsApp", "Free consultation", ],
     showWA: true,
   },
   {
@@ -138,14 +138,14 @@ const FALLBACK = {
 
 const WELCOME = {
   answer: "👋 Hi! I'm **WeDoClever**,  AI assistant. I can help you with our **web development, app development, SEO services, pricing**, and more!\n\nWhat would you like to know?",
-  chips: ["Web Development", "App Development", "SEO", "Pricing", "Free Audit"],
+  chips: ["Web Development", "App Development", "SEO",  "Free Audit"],
 };
 
 const QUICK_CHIPS = [
   { label: "🌐 Web Dev", query: "web development" },
   { label: "📱 App Dev", query: "mobile app development" },
   { label: "📈 SEO", query: "SEO services" },
-  { label: "💰 Pricing", query: "pricing plans" },
+  // { label: "💰 Pricing", query: "pricing plans" },
   { label: "📞 Contact", query: "contact" },
 ];
 
@@ -173,7 +173,7 @@ function ParsedText({ text }) {
   return (
     <span>
       {parts.map((part, i) =>
-        i % 2 === 1 ? <strong key={i} style={{ color: "#f2ede8", fontWeight: 600 }}>{part}</strong> : part
+        i % 2 === 1 ? <strong key={i} style={{ color: "#93c5fd", fontWeight: 600 }}>{part}</strong> : part
       )}
     </span>
   );
@@ -185,21 +185,22 @@ function ParsedText({ text }) {
 function InfoCard({ title, cards }) {
   return (
     <div style={{
-      marginTop: "0.5rem", background: "#0f0f0f", border: "1px solid #2a2a2a",
+      marginTop: "0.5rem", background: "linear-gradient(135deg,#040f1e,#071828)", border: "1px solid rgba(37,99,235,0.25)",
       borderRadius: "0.75rem", padding: "0.7rem 0.85rem", display: "flex",
       flexDirection: "column", gap: "0.32rem",
+      boxShadow: "inset 0 1px 0 rgba(59,130,246,0.08)",
     }}>
-      <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "#89aacc", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.25rem" }}>
+      <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "#60a5fa", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.25rem" }}>
         {title}
       </div>
       {cards.map((c, i) => (
-        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.82rem", color: "#c0bab4" }}>
+        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.82rem", color: "#94a3b8" }}>
           <span style={{ flexShrink: 0 }}>{c.icon}</span>
           <span>
             {c.label}:{" "}
             {c.link
-              ? <a href={c.link} style={{ color: "#89aacc", fontWeight: 500, textDecoration: "none" }}>{c.text}</a>
-              : <strong style={{ color: "#f2ede8", fontWeight: 500 }}>{c.text}</strong>
+              ? <a href={c.link} style={{ color: "#60a5fa", fontWeight: 500, textDecoration: "none" }}>{c.text}</a>
+              : <strong style={{ color: "#e2e8f0", fontWeight: 500 }}>{c.text}</strong>
             }
           </span>
         </div>
@@ -215,11 +216,11 @@ function MsgChip({ label, onClick }) {
   return (
     <button onClick={() => onClick(label)} style={{
       fontSize: "0.7rem", padding: "0.22rem 0.65rem", borderRadius: "100px",
-      background: "rgba(137,170,204,0.06)", border: "1px solid rgba(137,170,204,0.18)",
-      color: "#89aacc", cursor: "pointer", transition: "all 0.2s", fontFamily: "inherit",
+      background: "rgba(37,99,235,0.1)", border: "1px solid rgba(59,130,246,0.28)",
+      color: "#60a5fa", cursor: "pointer", transition: "all 0.2s", fontFamily: "inherit",
     }}
-      onMouseEnter={e => e.target.style.background = "rgba(137,170,204,0.15)"}
-      onMouseLeave={e => e.target.style.background = "rgba(137,170,204,0.06)"}
+      onMouseEnter={e => { e.target.style.background = "rgba(37,99,235,0.22)"; e.target.style.borderColor = "rgba(59,130,246,0.5)"; }}
+      onMouseLeave={e => { e.target.style.background = "rgba(37,99,235,0.1)"; e.target.style.borderColor = "rgba(59,130,246,0.28)"; }}
     >
       {label}
     </button>
@@ -248,10 +249,11 @@ function WAButton({ waLink }) {
 // ─────────────────────────────────────────────
 function TypingIndicator() {
   return (
-    <div style={{ display: "flex", gap: "4px", alignItems: "center", padding: "0.6rem 0.9rem", background: "#1a1a1a", border: "1px solid #222", borderRadius: "1rem 1rem 1rem 0.2rem", width: "56px" }}>
+    <div style={{ display: "flex", gap: "4px", alignItems: "center", padding: "0.6rem 0.9rem", background: "linear-gradient(135deg,#071828,#0a1e35)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: "1rem 1rem 1rem 0.2rem", width: "56px" }}>
       {[0, 0.2, 0.4].map((delay, i) => (
         <div key={i} style={{
-          width: 6, height: 6, borderRadius: "50%", background: "#89aacc",
+          width: 6, height: 6, borderRadius: "50%", background: "#3b82f6",
+          boxShadow: "0 0 6px rgba(59,130,246,0.6)",
           animation: `typeDot 1.2s ease-in-out ${delay}s infinite`,
         }} />
       ))}
@@ -279,19 +281,91 @@ const BUBBLE_MSGS = [
 export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
   const WA_LINK = `https://wa.me/${waNumber}`;
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+
+  // ── Persist messages in sessionStorage (cleared on browser refresh) ──
+  const [messages, setMessages] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem("wdc_msgs") || "[]"); }
+    catch { return []; }
+  });
+  const [initialized, setInitialized] = useState(() =>
+    !!sessionStorage.getItem("wdc_init")
+  );
+
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [initialized, setInitialized] = useState(false);
   const [bubbleIdx, setBubbleIdx] = useState(0);
   const [bubbleVisible, setBubbleVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640);
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   const msgListRef = useRef(null);
   const inputRef = useRef(null);
+  const chatRef = useRef(null);
+  const btnRef = useRef(null);
 
-  // Auto-scroll
+  // Save messages to sessionStorage on every change
   useEffect(() => {
-    if (msgListRef.current) msgListRef.current.scrollTop = msgListRef.current.scrollHeight;
+    sessionStorage.setItem("wdc_msgs", JSON.stringify(messages));
+  }, [messages]);
+
+  // Persist initialized flag
+  useEffect(() => {
+    if (initialized) sessionStorage.setItem("wdc_init", "1");
+  }, [initialized]);
+
+  // Mobile resize listener
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+
+  // Click / tap outside to close
+  useEffect(() => {
+    if (!open) return;
+    const fn = (e) => {
+      if (
+        chatRef.current && !chatRef.current.contains(e.target) &&
+        btnRef.current  && !btnRef.current.contains(e.target)
+      ) setOpen(false);
+    };
+    document.addEventListener("mousedown", fn);
+    document.addEventListener("touchstart", fn);
+    return () => {
+      document.removeEventListener("mousedown", fn);
+      document.removeEventListener("touchstart", fn);
+    };
+  }, [open]);
+
+  // Scroll to bottom on new message OR when chat reopens
+  useEffect(() => {
+    if (!msgListRef.current) return;
+    msgListRef.current.scrollTop = msgListRef.current.scrollHeight;
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (open && msgListRef.current) {
+      // slight delay so the window finishes its open animation first
+      setTimeout(() => {
+        if (msgListRef.current)
+          msgListRef.current.scrollTop = msgListRef.current.scrollHeight;
+      }, 350);
+    }
+  }, [open]);
+
+  // Show "scroll to top" button when user scrolls away from bottom
+  useEffect(() => {
+    const el = msgListRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      // show button once user has scrolled up more than 120px from bottom
+      const fromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+      setShowScrollTop(fromBottom > 120);
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [open, messages]); // re-attach after open/messages change
 
   // Cycle bubble messages
   useEffect(() => {
@@ -369,10 +443,13 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
         @keyframes bubbleIn { 0% { opacity:0; transform:translateX(12px) scale(.88) } 100% { opacity:1; transform:translateX(0) scale(1) } }
         @keyframes bubbleOut { 0% { opacity:1; transform:translateX(0) scale(1) } 100% { opacity:0; transform:translateX(12px) scale(.88) } }
         @keyframes wobble { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
+        @keyframes headerShimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
+        @keyframes floatBlob { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-8px) scale(1.05)} }
       `}</style>
 
       {/* ── FLOATING BUTTON ── */}
       <button
+        ref={btnRef}
         onClick={() => setOpen(o => !o)}
         aria-label="Chat with WeDoClever AI"
         style={{
@@ -384,8 +461,8 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
         }}
         className="group"
       >
-        {/* ── SPEECH BUBBLE ── */}
-        {!open && (
+        {/* ── SPEECH BUBBLE — desktop only ── */}
+        {!open && !isMobile && (
           <div style={{
             position: "absolute",
             right: "calc(100% + 14px)",
@@ -524,93 +601,177 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
         </span>
       </button>
 
+      {/* ── MOBILE BACKDROP ── */}
+      {open && isMobile && (
+        <div
+          onClick={() => setOpen(false)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 998,
+            background: "rgba(0,0,0,0.55)", backdropFilter: "blur(2px)",
+          }}
+        />
+      )}
+
       {/* ── CHAT WINDOW ── */}
       {open && (
-        <div style={{
-          position: "fixed", bottom: "0.5rem", right: "5.5rem", zIndex: 999,
-          width: 380, maxWidth: "calc(100vw - 2rem)", maxHeight: 600,
-          background: "#111", borderRadius: "1.4rem",
-          border: "1px solid #1e1e1e",
-          boxShadow: "0 24px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(137,170,204,.08)",
-          display: "flex", flexDirection: "column", overflow: "hidden",
-          animation: "winIn .32s cubic-bezier(.34,1.56,.64,1) both",
-          fontFamily: "'DM Sans', sans-serif",
-        }}>
+        <div
+          ref={chatRef}
+          style={isMobile ? {
+            // ── MOBILE: full-width bottom sheet ──
+            position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 999,
+            width: "100%", height: "88vh", maxHeight: "88vh",
+            background: "linear-gradient(180deg,#020c1b 0%,#030e1f 100%)",
+            borderRadius: "1.4rem 1.4rem 0 0",
+            border: "1px solid rgba(37,99,235,0.3)",
+            borderBottom: "none",
+            boxShadow: "0 -12px 60px rgba(0,0,0,.8), 0 0 60px rgba(37,99,235,0.12)",
+            display: "flex", flexDirection: "column", overflow: "hidden",
+            animation: "winIn .32s cubic-bezier(.34,1.56,.64,1) both",
+            fontFamily: "'DM Sans', sans-serif",
+          } : {
+            // ── DESKTOP: anchored above button ──
+            position: "fixed", bottom: "5.5rem", right: "1.5rem", zIndex: 999,
+            width: 380, maxWidth: "calc(100vw - 3rem)", maxHeight: 600,
+            background: "linear-gradient(180deg,#020c1b 0%,#030e1f 100%)",
+            borderRadius: "1.4rem",
+            border: "1px solid rgba(37,99,235,0.3)",
+            boxShadow: "0 24px 80px rgba(0,0,0,.8), 0 0 60px rgba(37,99,235,0.15), 0 0 0 1px rgba(59,130,246,0.08)",
+            display: "flex", flexDirection: "column", overflow: "hidden",
+            animation: "winIn .32s cubic-bezier(.34,1.56,.64,1) both",
+            fontFamily: "'DM Sans', sans-serif",
+          }}
+        >
 
           {/* HEADER */}
           <div style={{
-            background: "linear-gradient(135deg,#0f1a24,#111)",
-            borderBottom: "1px solid #1e1e1e", padding: "1rem 1.1rem",
+            background: "linear-gradient(135deg,#051228 0%,#071e3d 50%,#051228 100%)",
+            backgroundSize: "200% auto",
+            animation: "headerShimmer 6s linear infinite",
+            borderBottom: "1px solid rgba(37,99,235,0.3)", padding: "1rem 1.1rem",
             display: "flex", alignItems: "center", gap: ".75rem",
             position: "relative", overflow: "hidden",
+            boxShadow: "0 1px 0 rgba(59,130,246,0.15)",
           }}>
             <div style={{
               position: "absolute", inset: 0,
-              background: "radial-gradient(ellipse 80% 120% at 0% 50%,rgba(137,170,204,.08),transparent)",
+              background: "radial-gradient(ellipse 80% 120% at 0% 50%,rgba(37,99,235,0.18),transparent)",
+            }} />
+            {/* top shimmer line */}
+            <div style={{
+              position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+              background: "linear-gradient(90deg,transparent,rgba(59,130,246,0.6),rgba(139,92,246,0.4),transparent)",
             }} />
             {/* Avatar */}
             <div style={{ position: "relative", width: 40, height: 40, flexShrink: 0 }}>
               <div style={{
                 position: "absolute", inset: -2, borderRadius: "50%",
-                background: "linear-gradient(135deg,#89aacc,#4e85bf)",
+                background: "linear-gradient(135deg,#3b82f6,#7c3aed,#06b6d4)",
                 animation: "ringPulse 2.5s ease-in-out infinite", zIndex: 0,
               }} />
               <div style={{
                 position: "relative", zIndex: 1, width: 40, height: 40,
-                borderRadius: "50%", background: "#1a2535",
+                borderRadius: "50%", background: "linear-gradient(135deg,#071828,#0a1e35)",
                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem",
+                border: "1px solid rgba(59,130,246,0.2)",
               }}>
                 🤖
               </div>
             </div>
             <div style={{ flex: 1, position: "relative", zIndex: 1 }}>
-              <div style={{ fontSize: ".92rem", fontWeight: 600, color: "#f2ede8" }}>WeDoClever — AI Assistant</div>
+              <div style={{
+                fontSize: ".92rem", fontWeight: 700, color: "#fff",
+                background: "linear-gradient(90deg,#e2e8f0,#93c5fd)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>WeDoClever — AI Assistant</div>
               <div style={{ display: "flex", alignItems: "center", gap: ".35rem", marginTop: ".1rem" }}>
                 <span style={{
                   width: 6, height: 6, borderRadius: "50%", background: "#4ade80",
-                  boxShadow: "0 0 6px rgba(74,222,128,.7)", animation: "blink 2s ease-in-out infinite",
+                  boxShadow: "0 0 8px rgba(74,222,128,.9)", animation: "blink 2s ease-in-out infinite",
                   flexShrink: 0,
                 }} />
-                <span style={{ fontSize: ".68rem", color: "#666" }}>Online · Replies instantly</span>
+                <span style={{ fontSize: ".68rem", color: "#64748b" }}>Online · Replies instantly</span>
               </div>
             </div>
+           
+
+            {/* Close */}
             <button
               onClick={() => setOpen(false)}
               style={{
                 width: 28, height: 28, borderRadius: "50%",
-                background: "rgba(255,255,255,.05)", border: "1px solid #1e1e1e",
-                color: "#666", cursor: "pointer", display: "flex",
+                background: "rgba(37,99,235,0.1)", border: "1px solid rgba(59,130,246,0.25)",
+                color: "#64748b", cursor: "pointer", display: "flex",
                 alignItems: "center", justifyContent: "center",
-                transition: "background .2s, color .2s", position: "relative", zIndex: 1,
+                transition: "background .2s, color .2s, border-color .2s", position: "relative", zIndex: 1,
               }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(239,68,68,0.15)"; e.currentTarget.style.color = "#f87171"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.3)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(37,99,235,0.1)"; e.currentTarget.style.color = "#64748b"; e.currentTarget.style.borderColor = "rgba(59,130,246,0.25)"; }}
             >
               <X size={13} />
             </button>
           </div>
 
           {/* QUICK CHIPS BAR */}
+
+          
           <div style={{
-            padding: ".65rem .9rem", borderBottom: "1px solid #181818",
+            padding: ".65rem .9rem", borderBottom: "1px solid rgba(37,99,235,0.2)",
             display: "flex", gap: ".4rem", flexWrap: "wrap",
-            background: "#0f0f0f",
+            background: "rgba(3,14,31,0.8)",
           }}>
             {QUICK_CHIPS.map(({ label, query }) => (
               <button key={label} onClick={() => handleSend(query)} style={{
                 fontSize: ".68rem", padding: ".25rem .7rem", borderRadius: "100px",
-                background: "rgba(137,170,204,.07)", border: "1px solid rgba(137,170,204,.15)",
-                color: "#89aacc", cursor: "pointer", fontFamily: "inherit", fontWeight: 500,
+                background: "rgba(37,99,235,0.1)", border: "1px solid rgba(59,130,246,0.25)",
+                color: "#60a5fa", cursor: "pointer", fontFamily: "inherit", fontWeight: 500,
                 transition: "all .2s",
-              }}>
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(37,99,235,0.22)"; e.currentTarget.style.boxShadow = "0 0 10px rgba(59,130,246,0.2)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(37,99,235,0.1)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
                 {label}
               </button>
             ))}
           </div>
 
-          {/* MESSAGE LIST */}
+          {/* MESSAGE LIST wrapper — relative so the scroll-top btn can be absolute */}
+          <div style={{ position: "relative", flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+
+            {/* ── Scroll-to-top button ── */}
+            {showScrollTop && (
+              <button
+                onClick={() => {
+                  if (msgListRef.current) msgListRef.current.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                title="Scroll to top"
+                style={{
+                  position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)",
+                  zIndex: 10, display: "flex", alignItems: "center", gap: "0.3rem",
+                  padding: "0.28rem 0.75rem", borderRadius: "100px",
+                  background: "rgba(37,99,235,0.15)", border: "1px solid rgba(59,130,246,0.35)",
+                  color: "#60a5fa", fontSize: ".68rem", fontWeight: 600,
+                  fontFamily: "'DM Sans', sans-serif", cursor: "pointer",
+                  backdropFilter: "blur(8px)",
+                  boxShadow: "0 2px 12px rgba(37,99,235,0.25)",
+                  transition: "all .2s",
+                  animation: "msgIn .2s ease",
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(37,99,235,0.28)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(37,99,235,0.15)"}
+              >
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 15l-6-6-6 6"/>
+                </svg>
+                scroll to top
+              </button>
+            )}
+
           <div ref={msgListRef} style={{
             flex: 1, overflowY: "auto", padding: "1rem",
             display: "flex", flexDirection: "column", gap: ".6rem",
             scrollBehavior: "smooth",
+            background: "radial-gradient(ellipse 60% 50% at 10% 20%,rgba(37,99,235,0.07),transparent), radial-gradient(ellipse 50% 60% at 90% 80%,rgba(139,92,246,0.06),transparent)",
           }}>
             {messages.map(msg => (
               <div key={msg.id} style={{
@@ -621,8 +782,8 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
                 <div style={{
                   padding: ".6rem .88rem", borderRadius: msg.role === "user" ? "1rem 1rem .2rem 1rem" : "1rem 1rem 1rem .2rem",
                   ...(msg.role === "user"
-                    ? { background: "linear-gradient(135deg,#89aacc,#4e85bf)", color: "#fff", fontWeight: 500 }
-                    : { background: "#1a1a1a", border: "1px solid #222", color: "#d4cfc9" }
+                    ? { background: "linear-gradient(135deg,#1d4ed8,#2563eb,#1e40af)", color: "#fff", fontWeight: 500, boxShadow: "0 4px 16px rgba(37,99,235,0.35)" }
+                    : { background: "linear-gradient(135deg,#071828,#0a1e35)", border: "1px solid rgba(37,99,235,0.2)", color: "#cbd5e1", boxShadow: "inset 0 1px 0 rgba(59,130,246,0.06)" }
                   ),
                   fontSize: ".84rem", lineHeight: 1.56,
                 }}>
@@ -637,7 +798,7 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
                     ))}
                   </div>
                 )}
-                <div style={{ fontSize: ".6rem", color: "#444", textAlign: msg.role === "user" ? "right" : "left" }}>
+                <div style={{ fontSize: ".6rem", color: "#334155", textAlign: msg.role === "user" ? "right" : "left" }}>
                   {msg.time}
                 </div>
               </div>
@@ -650,12 +811,13 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
               </div>
             )}
           </div>
+          </div>{/* end message list wrapper */}
 
           {/* INPUT AREA */}
           <div style={{
-            padding: ".7rem .85rem", borderTop: "1px solid #1a1a1a",
+            padding: ".7rem .85rem", borderTop: "1px solid rgba(37,99,235,0.2)",
             display: "flex", gap: ".5rem", alignItems: "flex-end",
-            background: "#0f0f0f",
+            background: "rgba(2,12,27,0.95)",
           }}>
             <textarea
               ref={inputRef}
@@ -665,33 +827,66 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
               placeholder="Ask me anything about our services…"
               rows={1}
               style={{
-                flex: 1, background: "#1a1a1a", border: "1px solid #262626",
+                flex: 1, background: "rgba(5,18,40,0.8)", border: "1px solid rgba(37,99,235,0.2)",
                 borderRadius: ".75rem", padding: ".52rem .82rem",
-                fontSize: ".82rem", color: "#f2ede8", fontFamily: "inherit",
+                fontSize: ".82rem", color: "#e2e8f0", fontFamily: "inherit",
                 outline: "none", resize: "none", minHeight: 36, maxHeight: 88,
-                lineHeight: 1.5, transition: "border-color .2s",
+                lineHeight: 1.5, transition: "border-color .2s, box-shadow .2s",
               }}
-              onFocus={e => e.target.style.borderColor = "rgba(137,170,204,.4)"}
-              onBlur={e => e.target.style.borderColor = "#262626"}
+              onFocus={e => { e.target.style.borderColor = "rgba(59,130,246,0.6)"; e.target.style.boxShadow = "0 0 0 3px rgba(37,99,235,0.12)"; }}
+              onBlur={e => { e.target.style.borderColor = "rgba(37,99,235,0.2)"; e.target.style.boxShadow = "none"; }}
               onInput={e => { e.target.style.height = "auto"; e.target.style.height = Math.min(e.target.scrollHeight, 88) + "px"; }}
             />
+
             <button
               onClick={() => handleSend()}
               disabled={isTyping}
               style={{
                 width: 36, height: 36, borderRadius: ".6rem",
-                background: input.trim() ? "linear-gradient(135deg,#89aacc,#4e85bf)" : "#1e1e1e",
-                border: "none", cursor: input.trim() ? "pointer" : "default",
+                background: input.trim() ? "linear-gradient(135deg,#1d4ed8,#3b82f6)" : "rgba(5,18,40,0.8)",
+                border: input.trim() ? "none" : "1px solid rgba(37,99,235,0.2)",
+                cursor: input.trim() ? "pointer" : "default",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "background .2s, transform .2s", flexShrink: 0,
+                transition: "background .2s, transform .2s, box-shadow .2s", flexShrink: 0,
+                boxShadow: input.trim() ? "0 4px 14px rgba(37,99,235,0.4)" : "none",
               }}
               onMouseDown={e => { if (input.trim()) e.currentTarget.style.transform = "scale(.92)"; }}
               onMouseUp={e => e.currentTarget.style.transform = "scale(1)"}
             >
-              <Send size={15} color="#fff" />
+              <Send size={15} color={input.trim() ? "#fff" : "#334155"} />
+            </button>
+
+              {/* Refresh / clear chat */}
+            <button
+              title="Clear chat"
+              onClick={() => {
+                setMessages([]);
+                setInitialized(false);
+                sessionStorage.removeItem("wdc_msgs");
+                sessionStorage.removeItem("wdc_init");
+                setTimeout(() => {
+                  addBotMessage(WELCOME.answer, null, WELCOME.chips, false);
+                  setInitialized(true);
+                }, 300);
+              }}
+               style={{
+                width: 36, height: 36, borderRadius: ".6rem",
+                background: "rgba(5,18,40,0.8)", border: "1px solid rgba(37,99,235,0.2)",
+                color: "#334155", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "background .2s, transform .2s, color .2s, border-color .2s", flexShrink: 0,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(239,68,68,.12)"; e.currentTarget.style.color = "#f87171"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.3)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(5,18,40,0.8)"; e.currentTarget.style.color = "#334155"; e.currentTarget.style.borderColor = "rgba(37,99,235,0.2)"; }}
+            >
+              {/* Refresh icon */}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
             </button>
           </div>
-          <div style={{ padding: ".35rem 1rem .55rem", fontSize: ".63rem", color: "#2a2a2a", textAlign: "center" }}>
+          <div style={{ padding: ".35rem 1rem .55rem", fontSize: ".63rem", color: "#334155", textAlign: "center" }}>
             Powered by WeDoClever AI · Vasavi MPM Mall, 7th Floor - 806 , Ameerpet, Hyderbad - 900016
           </div>
         </div>
