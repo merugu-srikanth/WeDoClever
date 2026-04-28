@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react"
+import { Link } from "react-router-dom"
 import {
   Globe, Smartphone, ShoppingCart, Code2,
   Users, BarChart3, Search, ArrowRight
@@ -280,7 +281,8 @@ export default function Services() {
                 </div>
 
                 {/* discover button */}
-                <button
+                <Link
+                  to="/contact"
                   className={`disc-btn group/btn flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r ${srv.gradient} text-white font-syne font-bold text-xs uppercase tracking-widest shadow-md hover:scale-105 hover:shadow-lg transition-all duration-300`}
                 >
                   Discover
@@ -288,7 +290,7 @@ export default function Services() {
                     size={13}
                     className="group-hover/btn:translate-x-1 transition-transform duration-300"
                   />
-                </button>
+                </Link>
               </div>
 
               {/* shimmer overlay on hover */}

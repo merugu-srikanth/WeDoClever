@@ -1,5 +1,6 @@
 import { FastForwardIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 /* ════════════════════════════════════════════════════════════════════════════
    SCROLL REVEAL HOOK — pure CSS + IntersectionObserver (no CDN, instant)
@@ -114,30 +115,36 @@ const HeroSection = () => {
                         items-stretch sm:items-center
                         gap-3 sm:gap-4 md:gap-6 rv">
 
-          <button className="flex items-center justify-center gap-2 sm:gap-3
-                             px-6 sm:px-8 md:px-10
-                             py-3.5 sm:py-3
-                             rounded-full bg-white text-gray-950
-                             font-syne font-black text-xs sm:text-sm
-                             uppercase tracking-widest shadow-2xl
-                             hover:scale-105 transition-all duration-300
-                             w-full sm:w-auto">
+          <Link
+            to="/contact"
+            className="flex items-center justify-center gap-2 sm:gap-3
+                       px-6 sm:px-8 md:px-10
+                       py-3.5 sm:py-3
+                       rounded-full bg-white text-gray-950
+                       font-syne font-black text-xs sm:text-sm
+                       uppercase tracking-widest shadow-2xl
+                       hover:scale-105 transition-all duration-300
+                       w-full sm:w-auto"
+          >
             Let's Talk
             <span className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0
                              rounded-full border bg-blue-500 border-white/30
                              flex items-center justify-center glass-panel">
               <FastForwardIcon size={16} className="text-black" />
             </span>
-          </button>
+          </Link>
 
-          <button className="flex items-center justify-center gap-2 sm:gap-3
-                             px-6 sm:px-8 md:px-10
-                             py-3.5 sm:py-3
-                             rounded-full bg-blue-600 text-white
-                             font-syne font-black text-xs sm:text-sm
-                             uppercase tracking-widest shadow-2xl
-                             hover:scale-105 transition-all duration-300
-                             w-full sm:w-auto">
+          <Link
+            to="/services"
+            className="flex items-center justify-center gap-2 sm:gap-3
+                       px-6 sm:px-8 md:px-10
+                       py-3.5 sm:py-3
+                       rounded-full bg-blue-600 text-white
+                       font-syne font-black text-xs sm:text-sm
+                       uppercase tracking-widest shadow-2xl
+                       hover:scale-105 transition-all duration-300
+                       w-full sm:w-auto"
+          >
             <span className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0
                              rounded-full border border-white/30
                              flex items-center justify-center
@@ -145,7 +152,7 @@ const HeroSection = () => {
               <FastForwardIcon size={16} />
             </span>
             See How We Work
-          </button>
+          </Link>
         </div>
       </div>
     </section>
