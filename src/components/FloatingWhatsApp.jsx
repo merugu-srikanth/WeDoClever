@@ -13,7 +13,8 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle, X, Send, Bot, ChevronRight } from "lucide-react";
-import airobot from "../assets/AiChat/aiRobot.webp";
+import airobot1 from "../assets/AiChat/aiRobot.webp";
+import airobot from "../assets/AiChat/Hz83gNlD0i.gif";
 
 // ─────────────────────────────────────────────
 // KNOWLEDGE BASE — Add/edit topics here
@@ -82,7 +83,7 @@ const KNOWLEDGE_BASE = [
     title: "📞 Contact WeDoClever",
     answer: "We're based in **Hyderabad, India** and work with clients worldwide. Reach us any way you prefer — we reply within 24 hours.",
     cards: [
-      { icon: "📧", label: "Email", text: "wedocleverone@gmail.com", link: "mailto:wedocleverone@gmail.com" },
+      { icon: "📧", label: "Email", text: "info@wedoclever.in", link: "mailto:info@wedoclever.in" },
       { icon: "📞", label: "Phone", text: "+91 9110572323", link: "tel:+919876543210" },
       { icon: "📍", label: "Location", text: "Hyderabad, Telangana, India" },
     ],
@@ -461,23 +462,30 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
         }}
         className="group"
       >
-        {/* ── SPEECH BUBBLE — desktop only ── */}
-        {!open && !isMobile && (
+        {/* ── SPEECH BUBBLE — desktop: left of button | mobile: above button ── */}
+        {!open && (
           <div style={{
             position: "absolute",
-            right: "calc(100% + 14px)",
-            bottom: "50%",
-            transform: "translateY(50%)",
             pointerEvents: "none",
             animation: bubbleVisible ? "bubbleIn .38s cubic-bezier(.34,1.56,.64,1) both" : "bubbleOut .3s ease both",
+            ...(isMobile ? {
+              bottom: "calc(100% + 12px)",
+              right: 0,
+            } : {
+              right: "calc(100% + 14px)",
+              bottom: "50%",
+              transform: "translateY(50%)",
+            }),
           }}>
             {/* Bubble body */}
             <div style={{
               background: "linear-gradient(135deg, #0f172a, #1a2744)",
               border: "1px solid rgba(59,130,246,0.35)",
-              borderRadius: "1rem 1rem 0.25rem 1rem",
+              borderRadius: isMobile ? "1rem 1rem 0.25rem 1rem" : "1rem 1rem 0.25rem 1rem",
               padding: "0.55rem 0.9rem",
               whiteSpace: "nowrap",
+              maxWidth: isMobile ? "calc(100vw - 5.5rem)" : "none",
+              overflow: "hidden",
               boxShadow: "0 8px 28px rgba(0,0,0,0.55), 0 0 0 1px rgba(59,130,246,0.12)",
               position: "relative",
             }}>
@@ -508,26 +516,42 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
               }} />
             </div>
 
-            {/* Tail pointing right */}
-            <div style={{
-              position: "absolute",
-              right: -7,
-              bottom: 10,
-              width: 0, height: 0,
-              borderTop: "7px solid transparent",
-              borderBottom: "0px solid transparent",
-              borderLeft: "8px solid rgba(59,130,246,0.35)",
-            }} />
-            {/* Tail fill */}
-            <div style={{
-              position: "absolute",
-              right: -6,
-              bottom: 11,
-              width: 0, height: 0,
-              borderTop: "6px solid transparent",
-              borderBottom: "0px solid transparent",
-              borderLeft: "7px solid #1a2744",
-            }} />
+            {/* Tail — points right on desktop, points down on mobile */}
+            {isMobile ? (
+              <>
+                <div style={{
+                  position: "absolute", right: 14, bottom: -7,
+                  width: 0, height: 0,
+                  borderTop: "8px solid rgba(59,130,246,0.35)",
+                  borderLeft: "7px solid transparent",
+                  borderRight: "0px solid transparent",
+                }} />
+                <div style={{
+                  position: "absolute", right: 15, bottom: -6,
+                  width: 0, height: 0,
+                  borderTop: "7px solid #1a2744",
+                  borderLeft: "6px solid transparent",
+                  borderRight: "0px solid transparent",
+                }} />
+              </>
+            ) : (
+              <>
+                <div style={{
+                  position: "absolute", right: -7, bottom: 10,
+                  width: 0, height: 0,
+                  borderTop: "7px solid transparent",
+                  borderBottom: "0px solid transparent",
+                  borderLeft: "8px solid rgba(59,130,246,0.35)",
+                }} />
+                <div style={{
+                  position: "absolute", right: -6, bottom: 11,
+                  width: 0, height: 0,
+                  borderTop: "6px solid transparent",
+                  borderBottom: "0px solid transparent",
+                  borderLeft: "7px solid #1a2744",
+                }} />
+              </>
+            )}
           </div>
         )}
 
@@ -563,7 +587,7 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
 
         {/* Core button */}
         <span style={{
-          position: "relative", width: 62, height: 62, borderRadius: "50%",
+          position: "relative", borderRadius: "50%",
           background: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)",
           display: "flex", alignItems: "center", justifyContent: "center",
           boxShadow: "0 8px 32px rgba(37,99,235,0.5), 0 0 0 1px rgba(59,130,246,0.2), inset 0 1px 0 rgba(255,255,255,0.08)",
@@ -574,7 +598,15 @@ export default function FloatingWhatsApp({ waNumber = "919110572323" }) {
           onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(37,99,235,0.5), 0 0 0 1px rgba(59,130,246,0.2), inset 0 1px 0 rgba(255,255,255,0.08)"; }}
         >
           {open ? (
-            <X size={22} color="#94a3b8" strokeWidth={2.5} />
+            <span className="relative">
+            <img
+              src={airobot1}
+              alt="WeDoClever AI"
+              style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+            />
+                        <X className="absolute top-1 right-1" size={22} color="blue" strokeWidth={2.5} />
+
+            </span>
           ) : (
             <img
               src={airobot}

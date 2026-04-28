@@ -55,7 +55,7 @@ export default function Home() {
       {/* ─────────────────────────────────────────────────────────────────────────────
           HERO SECTION
       ───────────────────────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen overflow-hidden flex items-center pt-20">
+      <section className="relative min-h-screen overflow-hidden flex items-center md:items-start pt-20">
         <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
           <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260206_044704_dd33cb15-c23f-4cfc-aa09-a0465d4dcb54.mp4" type="video/mp4" />
         </video>

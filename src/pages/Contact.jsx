@@ -84,9 +84,10 @@ export default function Contact() {
   }
 
   const contacts = [
+    { icon: <Phone size={22} className="text-blue-400" />, label: "Call Us", value: "+91 8790526214", href: "tel:+918790526214" },
     { icon: <Phone size={22} className="text-blue-400" />, label: "Call Us", value: "+91 9110572323", href: "tel:+919110572323" },
-    { icon: <Mail size={22} className="text-cyan-400" />, label: "Email Us", value: "wedocleverone@gmail.com", href: "mailto:wedocleverone@gmail.com" },
-    { icon: <Clock size={22} className="text-purple-400" />, label: "Business Hours", value: "Mon–Fri: 9:00 – 18:00 IST", href: null },
+    { icon: <Mail size={22} className="text-cyan-400" />, label: "Email Us", value: "info@wedoclever.in", href: "mailto:info@wedoclever.in" },
+    // { icon: <Clock size={22} className="text-purple-400" />, label: "Business Hours", value: "Mon–Fri: 9:00 – 18:00 IST", href: null },
     { icon: <MapPin size={22} className="text-pink-400" />, label: "Address", value: "Vasavi MPM Mall, 7th Floor – 806, Ameerpet, Hyderabad – 500016", href: null },
   ]
 

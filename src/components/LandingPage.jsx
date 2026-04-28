@@ -2,61 +2,36 @@ import { FastForwardIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 /* ════════════════════════════════════════════════════════════════════════════
-   GLOBAL SCRIPTS (GSAP CDN)
-════════════════════════════════════════════════════════════════════════════ */
-const GlobalScripts = () => {
-  useEffect(() => {
-    const load = (src, cb) => {
-      if (document.querySelector(`script[src="${src}"]`)) {
-        cb && cb();
-        return;
-      }
-      const s = document.createElement("script");
-      s.src = src;
-      s.onload = cb;
-      document.head.appendChild(s);
-    };
-    load("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js", () =>
-      load("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js")
-    );
-  }, []);
-  return null;
-};
-
-/* ════════════════════════════════════════════════════════════════════════════
-   SCROLL REVEAL HOOK
+   SCROLL REVEAL HOOK — pure CSS + IntersectionObserver (no CDN, instant)
 ════════════════════════════════════════════════════════════════════════════ */
 const useReveal = (ref, selector = ".rv") => {
   useEffect(() => {
-    const timer = setInterval(() => {
-      const gsap = window.gsap;
-      const ScrollTrigger = window.ScrollTrigger;
-      if (gsap && ScrollTrigger && ref.current) {
-        const elements = ref.current.querySelectorAll(selector);
-        if (elements.length) {
-          gsap.registerPlugin(ScrollTrigger);
-          gsap.fromTo(
-            elements,
-            { y: 60, opacity: 0, scale: 0.95 },
-            {
-              y: 0,
-              opacity: 1,
-              scale: 1,
-              duration: 1,
-              stagger: 0.15,
-              ease: "expo.out",
-              scrollTrigger: {
-                trigger: ref.current,
-                start: "top 80%",
-              },
-            }
-          );
-        }
-        clearInterval(timer);
-      }
-    }, 150);
-    return () => clearInterval(timer);
-  }, [ref]);
+    const parent = ref.current;
+    if (!parent) return;
+    const els = Array.from(parent.querySelectorAll(selector));
+    if (!els.length) return;
+
+    els.forEach(el => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(36px) scale(0.97)";
+      el.style.transition = "opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1)";
+      el.style.willChange = "opacity, transform";
+    });
+
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      els.forEach((el, i) => {
+        setTimeout(() => {
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0) scale(1)";
+        }, i * 110);
+      });
+      io.disconnect();
+    }, { threshold: 0.08 });
+
+    io.observe(parent);
+    return () => io.disconnect();
+  }, []);
 };
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -65,11 +40,11 @@ const useReveal = (ref, selector = ".rv") => {
 const HeroSection = () => {
   const videoRef = useRef(null);
   useEffect(() => {
-    videoRef.current?.play().catch(() => {});
+    videoRef.current?.play().catch(() => { });
   }, []);
 
   return (
-    <section className="relative min-h-screen overflow-hidden flex items-center">
+    <section className="relative min-h-[100svh] overflow-hidden flex items-center md:items-start">
       <video
         ref={videoRef}
         autoPlay
@@ -83,40 +58,91 @@ const HeroSection = () => {
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-gray-900/90" />
 
-      <div className="relative container mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-16 sm:pb-20 z-10 w-full">
-        <div className="inline-flex items-center gap-2 sm:gap-3 rounded-full px-3 sm:px-5 py-1.5 sm:py-2 mb-6 sm:mb-8
-  bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700
-  bg-[length:200%_100%] bg-left hover:bg-right
-  transition-all duration-700 ease-in-out shadow-lg">
-  <span className="w-2 h-2 rounded-full bg-white animate-pulse shrink-0" />
-  <span className="text-white text-[10px] sm:text-xs font-syne font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase">
-    No Corporate BS. Just Results.
-  </span>
-</div>
+      {/* ── Content wrapper — padding-top clears the fixed navbar on every breakpoint ── */}
+      <div className="relative w-full max-w-7xl mx-aut
+                      px-5 sm:px-8 md:px-10 lg:px-16
+                      pt-28 sm:pt-32 md:pt-36 lg:pt-40
+                      pb-14 sm:pb-18 md:pb-20
+                      z-10">
 
-        <h1 className="font-syne font-black uppercase text-white leading-[1.08] tracking-tighter max-w-5xl">
-          <span className="block text-[clamp(32px,7vw,120px)] rv">WE BUILD</span>
-          <span className="block text-[clamp(28px,6.5vw,110px)] bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent rv">
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 rounded-full
+                        px-3 sm:px-4 md:px-5
+                        py-1.5 sm:py-2
+                        mb-4 sm:mb-6 md:mb-8
+                        bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700
+                        shadow-lg">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white animate-pulse shrink-0" />
+          <span className="text-white text-[9px] sm:text-[11px] md:text-xs
+                           font-syne font-bold tracking-[0.12em] sm:tracking-[0.18em] uppercase leading-none">
+            Empowering Digital Growth. Delivering Results.
+          </span>
+        </div>
+
+        {/* Heading — clamp auto-scales between breakpoints */}
+        <h1 className="font-syne font-black uppercase text-white
+                       leading-[1.05] tracking-tight sm:tracking-tighter
+                       max-w-[92vw] sm:max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl">
+          <span className="block text-[clamp(38px,9vw,72px)] rv">
+            WE BUILD
+          </span>
+          <span className="block mt-1 sm:mt-0
+                           text-[clamp(34px,8.5vw,68px)]
+                           bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent rv">
             SCALABLE IDEAS
           </span>
-          <span className="block text-[clamp(32px,7vw,120px)] text-glow rv">INTO REALITY</span>
+          <span className="block mt-1 sm:mt-0
+                           text-[clamp(38px,9vw,72px)] text-glow rv">
+            INTO REALITY
+          </span>
         </h1>
 
-        <p className="mt-3 sm:mt-4 text-white/85 max-w-2xl text-sm sm:text-base md:text-xl font-dm leading-relaxed rv font-medium">
-          Whether you're struggling with legacy code or dreaming up the next big SaaS, we engineer digital products that dominate markets. We don't just write code; we solve business problems.
+        {/* Paragraph */}
+        <p className="mt-4 sm:mt-5 md:mt-6
+                      text-white/80
+                      max-w-[90vw] sm:max-w-sm md:max-w-xl lg:max-w-2xl
+                      text-[15px] sm:text-base md:text-lg lg:text-xl
+                      font-dm leading-relaxed rv font-medium">
+          Whether you're struggling with legacy code or dreaming up the next big SaaS,
+          we engineer digital products that dominate markets.
+          We don't just write code; we solve business problems.
         </p>
 
-        <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-3 sm:gap-6 rv">
-          <button className="px-6 sm:px-10 py-2.5 sm:py-3 rounded-full bg-white text-gray-950 font-syne font-black text-xs sm:text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 sm:gap-3">
+        {/* Buttons — stack on mobile, row on sm+ */}
+        <div className="mt-6 sm:mt-7 md:mt-8
+                        flex flex-col sm:flex-row
+                        items-stretch sm:items-center
+                        gap-3 sm:gap-4 md:gap-6 rv">
+
+          <button className="flex items-center justify-center gap-2 sm:gap-3
+                             px-6 sm:px-8 md:px-10
+                             py-3.5 sm:py-3
+                             rounded-full bg-white text-gray-950
+                             font-syne font-black text-xs sm:text-sm
+                             uppercase tracking-widest shadow-2xl
+                             hover:scale-105 transition-all duration-300
+                             w-full sm:w-auto">
             Let's Talk
-            <span className="w-8 h-8 sm:w-12 sm:h-12 rounded-full border bg-blue-500 border-white/30 flex items-center justify-center transition-all hover:bg-white/10 glass-panel">
-              <FastForwardIcon className="text-white" />
+            <span className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0
+                             rounded-full border bg-blue-500 border-white/30
+                             flex items-center justify-center glass-panel">
+              <FastForwardIcon size={16} className="text-black" />
             </span>
           </button>
 
-          <button className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-blue-600 text-gray-100 font-syne font-black text-xs sm:text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 sm:gap-3">
-            <span className="w-8 h-8 sm:w-12 sm:h-12 rounded-full border border-white/30 flex items-center justify-center transition-all hover:bg-white/10 glass-panel">
-              <FastForwardIcon className="text-white" />
+          <button className="flex items-center justify-center gap-2 sm:gap-3
+                             px-6 sm:px-8 md:px-10
+                             py-3.5 sm:py-3
+                             rounded-full bg-blue-600 text-white
+                             font-syne font-black text-xs sm:text-sm
+                             uppercase tracking-widest shadow-2xl
+                             hover:scale-105 transition-all duration-300
+                             w-full sm:w-auto">
+            <span className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0
+                             rounded-full border border-white/30
+                             flex items-center justify-center
+                             bg-white text-blue-700 hover:text-blue-500">
+              <FastForwardIcon size={16} />
             </span>
             See How We Work
           </button>
@@ -231,13 +257,13 @@ const ServicesSection = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 glow-dot" />
             <span className="text-xs font-syne font-bold text-blue-400 uppercase tracking-widest">Our Services</span>
           </div>
-          <h2 className="sv font-syne font-black text-4xl md:text-5xl lg:text-6xl text-slate-100 leading-tight">
+          <h2 className="sv font-syne font-black text-[clamp(22px,4vw,44px)] text-slate-100 leading-[1.15]">
             Digital Services That{" "}
             <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent">
               Drive Real Growth
             </span>
           </h2>
-          <p className="sv mt-5 text-slate-400 text-lg font-dm max-w-2xl mx-auto leading-relaxed">
+          <p className="sv mt-4 text-slate-400 text-[clamp(13px,1.3vw,17px)] font-dm max-w-2xl mx-auto leading-relaxed">
             From custom web development to mobile app development and digital marketing — complete end-to-end digital solutions built to scale your business.
           </p>
         </div>
@@ -301,13 +327,13 @@ const TechStackSection = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 glow-dot" />
           <span className="text-xs font-syne font-bold text-blue-400 uppercase tracking-widest">Technologies We Use</span>
         </div>
-        <h2 className="tck font-syne font-black text-4xl md:text-5xl text-slate-100">
+        <h2 className="tck font-syne font-black text-[clamp(22px,4vw,44px)] text-slate-100 leading-[1.15]">
           Our{" "}
           <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
             Tech Stack
           </span>
         </h2>
-        <p className="tck mt-4 text-slate-400 font-dm max-w-xl mx-auto leading-relaxed">
+        <p className="tck mt-4 text-slate-400 text-[clamp(13px,1.3vw,17px)] font-dm max-w-xl mx-auto leading-relaxed">
           Modern, battle-tested technologies across web development, mobile apps, and digital marketing — powering scalable solutions that last.
         </p>
       </div>
@@ -358,88 +384,79 @@ const ProcessSection = () => {
   useReveal(ref, ".proc");
 
   const steps = [
-    {
-      number: "01",
-      title: "Understand",
-      desc: "We deep-dive into your business goals, target audience, and technical requirements to define the right scope.",
-    },
-    {
-      number: "02",
-      title: "Plan",
-      desc: "Architecture design, project roadmap, tech stack selection, and milestone planning tailored to your timeline.",
-    },
-    {
-      number: "03",
-      title: "Build",
-      desc: "Agile development with daily progress updates, clean code practices, and regular review checkpoints.",
-    },
-    {
-      number: "04",
-      title: "Launch",
-      desc: "Thorough QA testing, SEO optimization, performance tuning, and seamless production deployment.",
-    },
-    {
-      number: "05",
-      title: "Scale",
-      desc: "Post-launch monitoring, feature enhancements, and infrastructure scaling as your business grows.",
-    },
+    { number: "01", title: "Understand", desc: "We deep-dive into your business goals, target audience, and technical requirements to define the right scope." },
+    { number: "02", title: "Plan", desc: "Architecture design, project roadmap, tech stack selection, and milestone planning tailored to your timeline." },
+    { number: "03", title: "Build", desc: "Agile development with daily progress updates, clean code practices, and regular review checkpoints." },
+    { number: "04", title: "Launch", desc: "Thorough QA testing, SEO optimization, performance tuning, and seamless production deployment." },
+    { number: "05", title: "Scale", desc: "Post-launch monitoring, feature enhancements, and infrastructure scaling as your business grows." },
   ];
 
   return (
-    <section
-      ref={ref}
-      id="process"
-      className="py-28 bg-[#020617] relative overflow-hidden"
-      aria-label="Our Web and App Development Process"
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_50%,rgba(37,99,235,0.07),transparent)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
+    <section ref={ref} id="process" className="py-24 sm:py-28 bg-[#020617] relative overflow-hidden" aria-label="Our Web and App Development Process">
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <style>{`
+        @keyframes procFloat1 { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-22px) rotate(8deg)} }
+        @keyframes procFloat2 { 0%,100%{transform:translateY(0) rotate(45deg)} 50%{transform:translateY(18px) rotate(65deg)} }
+        @keyframes procDrift  { 0%{transform:translate(0,0)} 33%{transform:translate(14px,-10px)} 66%{transform:translate(-10px,14px)} 100%{transform:translate(0,0)} }
+        @keyframes procPulse  { 0%,100%{opacity:.2;transform:scale(1)} 50%{opacity:.55;transform:scale(1.1)} }
+        @keyframes procRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes procBlink  { 0%,100%{opacity:.12} 50%{opacity:.55} }
+      `}</style>
+
+      {/* ── BIG GLOW BLOBS ── */}
+      <div style={{ position: "absolute", width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle,rgba(37,99,235,0.13),transparent 70%)", top: "-18%", left: "-12%", animation: "procDrift 14s ease-in-out infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 420, height: 420, borderRadius: "50%", background: "radial-gradient(circle,rgba(139,92,246,0.1),transparent 70%)", bottom: "-12%", right: "-10%", animation: "procDrift 18s ease-in-out 4s infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle,rgba(6,182,212,0.08),transparent 70%)", top: "38%", right: "14%", animation: "procPulse 9s ease-in-out 1s infinite", pointerEvents: "none" }} />
+
+      {/* ── FLOATING SQUARES / BOXES ── */}
+      <div style={{ position: "absolute", width: 64, height: 64, border: "1px solid rgba(59,130,246,0.22)", borderRadius: "14px", top: "10%", right: "18%", animation: "procFloat1 7s ease-in-out infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 44, height: 44, border: "1px solid rgba(139,92,246,0.28)", borderRadius: "10px", bottom: "18%", left: "10%", animation: "procFloat2 10s ease-in-out 1.5s infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 28, height: 28, border: "1px solid rgba(6,182,212,0.3)", borderRadius: "6px", top: "52%", left: "5%", animation: "procFloat1 12s ease-in-out 2s infinite", pointerEvents: "none", transform: "rotate(45deg)" }} />
+      <div style={{ position: "absolute", width: 88, height: 88, border: "1px solid rgba(37,99,235,0.13)", borderRadius: "18px", bottom: "32%", right: "4%", animation: "procRotate 22s linear infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 36, height: 36, border: "1px solid rgba(59,130,246,0.18)", borderRadius: "8px", top: "72%", right: "30%", animation: "procFloat2 8s ease-in-out 3s infinite", pointerEvents: "none" }} />
+
+      {/* ── FLOATING CIRCLES ── */}
+      <div style={{ position: "absolute", width: 18, height: 18, borderRadius: "50%", background: "rgba(59,130,246,0.35)", top: "22%", left: "22%", animation: "procPulse 5s ease-in-out infinite", boxShadow: "0 0 14px rgba(59,130,246,0.45)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 12, height: 12, borderRadius: "50%", background: "rgba(139,92,246,0.4)", top: "68%", right: "22%", animation: "procPulse 7s ease-in-out 1s infinite", boxShadow: "0 0 10px rgba(139,92,246,0.4)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 9, height: 9, borderRadius: "50%", background: "rgba(6,182,212,0.45)", bottom: "28%", left: "38%", animation: "procBlink 4s ease-in-out 0.5s infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 6, height: 6, borderRadius: "50%", background: "rgba(59,130,246,0.6)", top: "43%", right: "42%", animation: "procBlink 3.2s ease-in-out 1.8s infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", width: 7, height: 7, borderRadius: "50%", background: "rgba(139,92,246,0.5)", top: "15%", left: "48%", animation: "procBlink 5s ease-in-out 2.5s infinite", pointerEvents: "none" }} />
+
+      {/* ── GRID + CENTER GLOW ── */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.025)_1px,transparent_1px)] bg-[size:64px_64px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(37,99,235,0.06),transparent)]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-16 sm:mb-20">
           <div className="proc inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 glow-dot" />
             <span className="text-xs font-syne font-bold text-blue-400 uppercase tracking-widest">How We Work</span>
           </div>
-          <h2 className="proc font-syne font-black text-4xl md:text-5xl lg:text-6xl text-slate-100 leading-tight">
+          <h2 className="proc font-syne font-black text-[clamp(22px,4vw,44px)] text-slate-100 leading-[1.15]">
             Our Proven{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              Process
-            </span>
+            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Process</span>
           </h2>
-          <p className="proc mt-5 text-slate-400 text-lg font-dm max-w-xl mx-auto leading-relaxed">
+          <p className="proc mt-4 text-slate-400 text-[clamp(13px,1.3vw,17px)] font-dm max-w-xl mx-auto leading-relaxed">
             A clear 5-step process that transforms your idea into a market-ready digital product — on time, every time.
           </p>
         </div>
 
         {/* Desktop: Horizontal Timeline */}
         <div className="hidden md:block">
-          {/* Step circles + connecting line */}
           <div className="relative flex items-center justify-between mb-12 px-8">
-            {/* Background connecting line */}
-            <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-px bg-blue-500/15" />
+            <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
             {steps.map((step, idx) => (
-              <div
-                key={step.number}
-                className="proc relative z-10 flex flex-col items-center"
-                style={{ transitionDelay: `${idx * 120}ms` }}
-              >
-                <div className="w-16 h-16 rounded-full bg-[#0F172A] border-2 border-blue-500/40 flex items-center justify-center font-syne font-black text-blue-400 text-sm hover:border-blue-400 hover:bg-blue-500/10 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 cursor-default">
+              <div key={step.number} className="proc relative z-10 flex flex-col items-center" style={{ transitionDelay: `${idx * 120}ms` }}>
+                <div className="w-16 h-16 rounded-full bg-[#0F172A] border-2 border-blue-500/40 flex items-center justify-center font-syne font-black text-blue-400 text-sm hover:border-blue-400 hover:bg-blue-500/10 hover:shadow-[0_0_24px_rgba(59,130,246,0.4)] transition-all duration-300 cursor-default">
                   {step.number}
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Step text */}
           <div className="grid grid-cols-5 gap-4 px-4">
             {steps.map((step, idx) => (
-              <div
-                key={step.title}
-                className="proc text-center"
-                style={{ transitionDelay: `${idx * 120 + 200}ms` }}
-              >
+              <div key={step.title} className="proc text-center" style={{ transitionDelay: `${idx * 120 + 200}ms` }}>
                 <h3 className="font-syne font-black text-lg text-slate-100 mb-2">{step.title}</h3>
                 <p className="text-slate-500 text-xs font-dm leading-relaxed">{step.desc}</p>
               </div>
@@ -450,21 +467,15 @@ const ProcessSection = () => {
         {/* Mobile: Vertical Timeline */}
         <div className="md:hidden space-y-0">
           {steps.map((step, idx) => (
-            <div
-              key={step.number}
-              className="proc flex gap-5"
-              style={{ transitionDelay: `${idx * 100}ms` }}
-            >
+            <div key={step.number} className="proc flex gap-4" style={{ transitionDelay: `${idx * 100}ms` }}>
               <div className="flex flex-col items-center">
-                <div className="w-12 h-12 rounded-full bg-[#0F172A] border-2 border-blue-500/40 flex items-center justify-center font-syne font-black text-blue-400 text-xs shrink-0">
+                <div className="w-11 h-11 rounded-full bg-[#0F172A] border-2 border-blue-500/40 flex items-center justify-center font-syne font-black text-blue-400 text-xs shrink-0">
                   {step.number}
                 </div>
-                {idx < steps.length - 1 && (
-                  <div className="flex-1 w-px bg-blue-500/20 my-2 min-h-[40px]" />
-                )}
+                {idx < steps.length - 1 && <div className="flex-1 w-px bg-blue-500/20 my-2 min-h-[36px]" />}
               </div>
-              <div className="pt-2 pb-8">
-                <h3 className="font-syne font-black text-lg text-slate-100 mb-1">{step.title}</h3>
+              <div className="pt-1.5 pb-7">
+                <h3 className="font-syne font-black text-base text-slate-100 mb-1">{step.title}</h3>
                 <p className="text-slate-400 text-sm font-dm leading-relaxed">{step.desc}</p>
               </div>
             </div>
@@ -555,14 +566,14 @@ const WhyChooseUs = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 glow-dot" />
             <span className="text-xs font-syne font-bold text-blue-400 uppercase tracking-widest">Why Choose Us</span>
           </div>
-          <h2 className="why font-syne font-black text-4xl md:text-5xl lg:text-6xl text-slate-100 leading-tight">
+          <h2 className="why font-syne font-black text-[clamp(22px,4vw,44px)] text-slate-100 leading-[1.15]">
             Built for{" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               Performance
             </span>{" "}
             &amp; Results
           </h2>
-          <p className="why mt-5 text-slate-400 text-lg font-dm max-w-2xl mx-auto leading-relaxed">
+          <p className="why mt-4 text-slate-400 text-[clamp(13px,1.3vw,17px)] font-dm max-w-2xl mx-auto leading-relaxed">
             We don't just build websites and apps. We build competitive advantages. Here's why businesses choose WeDo Clever over every other agency.
           </p>
         </div>
@@ -611,14 +622,14 @@ const CTASection = () => {
           <span className="text-xs font-syne font-bold text-blue-400 uppercase tracking-widest">Let's Collaborate</span>
         </div>
 
-        <h2 className="cta font-syne font-black text-4xl md:text-5xl lg:text-6xl text-slate-100 leading-tight mb-6">
+        <h2 className="cta font-syne font-black text-[clamp(22px,4vw,44px)] text-slate-100 leading-[1.15] mb-5">
           Have an idea?
           <br />
           <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent">
             Let's build it together.
           </span>
         </h2>
-        <p className="cta text-slate-400 text-lg font-dm mb-10 max-w-xl mx-auto leading-relaxed">
+        <p className="cta text-slate-400 text-[clamp(13px,1.3vw,17px)] font-dm mb-10 max-w-xl mx-auto leading-relaxed">
           Whether you need a website, a mobile app, or a full digital marketing strategy — we're your one-stop digital growth partner.
         </p>
 
@@ -682,13 +693,13 @@ const ContactSection = () => {
               <span className="text-xs font-syne font-bold text-blue-400 uppercase tracking-widest">Get In Touch</span>
             </div>
 
-            <h2 className="ct font-syne font-black text-4xl md:text-5xl text-slate-100 leading-tight mb-6">
+            <h2 className="ct font-syne font-black text-[clamp(22px,4vw,44px)] text-slate-100 leading-[1.15] mb-5">
               Let's Build Something{" "}
               <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 Remarkable
               </span>
             </h2>
-            <p className="ct text-slate-400 font-dm text-lg leading-relaxed mb-10">
+            <p className="ct text-slate-400 text-[clamp(13px,1.3vw,17px)] font-dm leading-relaxed mb-10">
               Ready to launch your web development project, mobile app, or digital marketing campaign? Tell us your requirement and we'll craft a tailored solution for your business.
             </p>
 
@@ -716,8 +727,8 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <div className="text-xs font-syne font-bold uppercase tracking-widest text-slate-500 mb-1">Email Us</div>
-                  <a href="mailto:wedocleverone@gmail.com" className="text-lg font-syne font-bold text-slate-200 hover:text-blue-400 transition-colors">
-                    wedocleverone@gmail.com
+                  <a href="mailto:info@wedoclever.in" className="text-lg font-syne font-bold text-slate-200 hover:text-blue-400 transition-colors">
+                    info@wedoclever.in
                   </a>
                 </div>
               </div>
@@ -837,7 +848,6 @@ const ContactSection = () => {
 export default function LandingPage() {
   return (
     <>
-      <GlobalScripts />
       <HeroSection />
       <TrustStrip />
       <ServicesSection />

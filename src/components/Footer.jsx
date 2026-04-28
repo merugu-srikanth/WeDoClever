@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
 import { Mail, Phone, MapPin } from "lucide-react"
+import logo from "../assets/logo.png"
+  
 
 const Facebook = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
 const Twitter = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
@@ -13,33 +15,23 @@ export default function Footer() {
     <footer className="bg-[#0f172a] text-gray-300 py-16 relative overflow-hidden border-t border-blue-900/50">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl point-events-none -translate-y-1/2 translate-x-1/2"></div>
       
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className=" mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.3)]">
-                <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
-                  <rect x="1" y="1" width="7" height="7" rx="1.5" fill="white" />
-                  <rect x="10" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.5" />
-                  <rect x="1" y="10" width="7" height="7" rx="1.5" fill="white" opacity="0.5" />
-                  <rect x="10" y="10" width="7" height="7" rx="1.5" fill="white" />
-                </svg>
-              </div>
-              <span className="font-syne font-bold text-xl text-white">
-                WeDo <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Clever</span>
-              </span>
+              <img src={logo} alt="WeDoClever Logo" className="h-30 text-center" />
             </Link>
             <p className="text-sm font-dm leading-relaxed text-gray-400">
               Delivering end-to-end software consulting and development. We help enterprises scale with efficiency and modern tech.
             </p>
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <a href="#" className="p-2 rounded-full bg-blue-900/30 text-blue-400 hover:bg-blue-500 hover:text-white transition-all"><Facebook size={18} /></a>
               <a href="#" className="p-2 rounded-full bg-blue-900/30 text-blue-400 hover:bg-blue-500 hover:text-white transition-all"><Twitter size={18} /></a>
               <a href="#" className="p-2 rounded-full bg-blue-900/30 text-blue-400 hover:bg-blue-500 hover:text-white transition-all"><Linkedin size={18} /></a>
               <a href="#" className="p-2 rounded-full bg-blue-900/30 text-blue-400 hover:bg-blue-500 hover:text-white transition-all"><Instagram size={18} /></a>
-            </div>
+            </div> */}
           </div>
 
           {/* Quick Links */}
@@ -90,11 +82,15 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="text-blue-400 shrink-0" size={18} />
-                <a href="tel:+19454445648" className="hover:text-blue-400">+91 9110572323</a>
+                <a href="tel:+918790526214" className="hover:text-blue-400">+91 8790526214</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="text-blue-400 shrink-0" size={18} />
+                <a href="tel:+919110572323" className="hover:text-blue-400">+91 9110572323</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="text-blue-400 shrink-0" size={18} />
-                <a href="mailto:wedocleverone@gmail.com" className="hover:text-blue-400">wedocleverone@gmail.com</a>
+                <a href="mailto:info@wedoclever.in" className="hover:text-blue-400">info@wedoclever.in</a>
               </li>
             </ul>
           </div>

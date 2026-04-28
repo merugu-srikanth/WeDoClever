@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react"
 import { NavLink, Link, useLocation } from "react-router-dom"
 import { Menu, X } from "lucide-react"
 import gsap from "gsap"
+// import logo from "../assets/logo.webp"
+import logo from "../assets/image.png"
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -29,7 +31,7 @@ export default function Navbar() {
   const links = [
     { name: "Home", path: "/" },
     { name: "Services", path: "/services" },
-    { name: "Projects", path: "/projects" },
+    // { name: "Projects", path: "/projects" },
     { name: "Contact", path: "/contact" },
   ]
 
@@ -80,24 +82,26 @@ export default function Navbar() {
 
           {/* ── Logo ── */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div style={{
-              width: 42, height: 42, borderRadius: 12,
-              background: "linear-gradient(135deg, #1d4ed8, #2563eb, #06b6d4)",
+            <div 
+            style={{
+              // width: 42, height: 42, borderRadius: 12,
+              // background: "linear-gradient(135deg, #1d4ed8, #2563eb, #06b6d4)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 18px rgba(37,99,235,0.6), 0 0 40px rgba(37,99,235,0.2)",
+              // boxShadow: "0 0 18px rgba(37,99,235,0.6), 0 0 40px rgba(37,99,235,0.2)",
               transition: "box-shadow .3s ease",
             }}
-              onMouseEnter={e => e.currentTarget.style.boxShadow = "0 0 28px rgba(37,99,235,0.9), 0 0 60px rgba(37,99,235,0.35)"}
-              onMouseLeave={e => e.currentTarget.style.boxShadow = "0 0 18px rgba(37,99,235,0.6), 0 0 40px rgba(37,99,235,0.2)"}
+              // onMouseEnter={e => e.currentTarget.style.boxShadow = "0 0 28px rgba(37,99,235,0.9), 0 0 60px rgba(37,99,235,0.35)"}
+              // onMouseLeave={e => e.currentTarget.style.boxShadow = "0 0 18px rgba(37,99,235,0.6), 0 0 40px rgba(37,99,235,0.2)"}
             >
-              <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+              {/* <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
                 <rect x="1" y="1" width="7" height="7" rx="1.5" fill="white" />
                 <rect x="10" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.55" />
                 <rect x="1" y="10" width="7" height="7" rx="1.5" fill="white" opacity="0.55" />
                 <rect x="10" y="10" width="7" height="7" rx="1.5" fill="white" />
-              </svg>
+              </svg> */}
+              <img src={logo} alt="WeDoClever Logo" className="h-15 text-center" />
             </div>
-            <span className="font-syne font-bold text-xl text-white">
+            {/* <span className="font-syne font-bold text-xl text-white">
               WeDo{" "}
               <span style={{
                 background: "linear-gradient(90deg, #60a5fa, #38bdf8, #818cf8)",
@@ -108,10 +112,14 @@ export default function Navbar() {
               }}>
                 Clever
               </span>
-            </span>
+            </span> */}
           </Link>
 
-          {/* ── Desktop Links ── */}
+          
+
+          {/* ── CTA Button ── */}
+          <div className="hidden md:flex items-center gap-4">
+            {/* ── Desktop Links ── */}
           <div className="hidden md:flex items-center gap-8">
             {links.map((link) => (
               <NavLink
@@ -146,9 +154,6 @@ export default function Navbar() {
               </NavLink>
             ))}
           </div>
-
-          {/* ── CTA Button ── */}
-          <div className="hidden md:flex items-center gap-4">
             <Link
               to="/contact"
               style={{
